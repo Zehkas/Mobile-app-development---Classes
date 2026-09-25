@@ -1,11 +1,13 @@
-import { View, Text } from 'react-native'
+import CartContextProvider from '@/store/coffeeContext'
 import { Slot } from 'expo-router'
-import React from 'react'
+import { View } from 'react-native'
 
 const RootLayout = () => {
   return (
-    <View style = {{flex: 1}}>
-      <Slot />
+    <View style={{ flex: 1 }}>
+      <CartContextProvider>
+        <Slot />
+      </CartContextProvider>
     </View>
   )
 }

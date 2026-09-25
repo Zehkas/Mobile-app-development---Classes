@@ -1,28 +1,26 @@
 import CoffeeButton from '@/Components/CoffeeButtons'
 import { globalColors, globalMeasures } from '@/constants/theme'
+import { CartContext, CoffeeCart } from '@/store/coffeeContext'
 import { DATA_COFFEES } from '@/store/coffees.store'
 import { Ionicons } from '@expo/vector-icons'
 import { useLocalSearchParams, useRouter } from 'expo-router'
-import { useState } from 'react'
+import { useContext, useState } from 'react'
 import { Image, Pressable, StyleSheet, Text, View } from 'react-native'
 import { SafeAreaView } from 'react-native-safe-area-context'
 
 const CoffeeFormScreen = () => {
+
+    //llamar a context 
+    const { addCoffeeToCart } = useContext(CartContext)
+
 
     const router = useRouter()
 
 
 
     const { id } = useLocalSearchParams()
-
     const [quantity, setQuantity] = useState(1)
-
     const [size, setSize] = useState('S')
-
-
-
-
-
 
     const coffee = DATA_COFFEES.find(item => item.id === id)
 
@@ -42,6 +40,19 @@ const CoffeeFormScreen = () => {
             setQuantity(quantity - 1)
 
         }
+    }
+
+    const addToCart = () => {
+        addCoffeeToCart({
+            id: coffee?.id+'#'+size,
+            title: coffee?.title,
+            price: coffee?.price,
+            quantity: quantity,
+            size: size,
+            image: coffee
+
+        } as CoffeeCart)
+        router.replace('/products')
     }
 
 
@@ -81,32 +92,32 @@ const CoffeeFormScreen = () => {
 
                 <View style={{ flexDirection: 'row', gap: 30, marginVertical: 30 }}>
 
-                    <Pressable 
-                    onPress={() => setSize('S')}
-                    
-                    style = {[styles.sizeButton, size === 'S'?{backgroundColor:globalColors.primary}:null]}>
-                        <Text style = {[styles.colorSizeButton, size === 'S'?{backgroundColor:globalColors.white}:null]}>S</Text>
+                    <Pressable
+                        onPress={() => setSize('S')}
+
+                        style={[styles.sizeButton, size === 'S' ? { backgroundColor: globalColors.primary } : null]}>
+                        <Text style={[styles.colorSizeButton, size === 'S' ? { backgroundColor: globalColors.white } : null]}>S</Text>
                     </Pressable>
 
-
-                    <Pressable 
-                    onPress={() => setSize('M')}
-                    
-                    style = {[styles.sizeButton, size === 'M'?{backgroundColor:globalColors.primary}:null]}>
-                        <Text style = {[styles.colorSizeButton, size === 'M'?{backgroundColor:globalColors.white}:null]}>M</Text>
-                    </Pressable>
-        
 
                     <Pressable
-                    onPress={() => setSize('L')}
-                    
-                    style = {[styles.sizeButton, size === 'L'?{backgroundColor:globalColors.primary}:null]}>
-                        <Text style = {[styles.colorSizeButton, size === 'L'?{backgroundColor:globalColors.white}:null]}>L</Text>
+                        onPress={() => setSize('M')}
+
+                        style={[styles.sizeButton, size === 'M' ? { backgroundColor: globalColors.primary } : null]}>
+                        <Text style={[styles.colorSizeButton, size === 'M' ? { backgroundColor: globalColors.white } : null]}>M</Text>
+                    </Pressable>
+
+
+                    <Pressable
+                        onPress={() => setSize('L')}
+
+                        style={[styles.sizeButton, size === 'L' ? { backgroundColor: globalColors.primary } : null]}>
+                        <Text style={[styles.colorSizeButton, size === 'L' ? { backgroundColor: globalColors.white } : null]}>L</Text>
                     </Pressable>
 
 
                 </View>
-                <CoffeeButton title='Add to Cart' event={() => { }} />
+                <CoffeeButton title='Add to Cart' event={addToCart} />
 
 
             </View>
@@ -136,17 +147,17 @@ const styles = StyleSheet.create({
         textAlign: 'center',
         borderRadius: 18
     },
-    sizeButton:{
-        backgroundColor:globalColors.white,
-        height:50,
-        width:50,
-        alignItems:'center',
-        justifyContent:'center',
+    sizeButton: {
+        backgroundColor: globalColors.white,
+        height: 50,
+        width: 50,
+        alignItems: 'center',
+        justifyContent: 'center',
         borderRadius: 8
 
     },
-    colorSizeButton:{
-        color:globalColors.primary
+    colorSizeButton: {
+        color: globalColors.primary
     }
 
 
