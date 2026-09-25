@@ -1,9 +1,8 @@
-import { View, Text, Image, StyleSheet, Pressable } from 'react-native'
-import React from 'react'
-import { SafeAreaView } from 'react-native-safe-area-context'
-import { globalColors, globalMeasures } from '@/constants/theme'
 import CoffeeButton from '@/Components/CoffeeButtons'
+import { globalColors, globalMeasures } from '@/constants/theme'
 import { useRouter } from 'expo-router'
+import { Image, StyleSheet, Text } from 'react-native'
+import { SafeAreaView } from 'react-native-safe-area-context'
 
 const Home = () => {
 

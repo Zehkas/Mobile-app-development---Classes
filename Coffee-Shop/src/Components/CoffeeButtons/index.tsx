@@ -1,6 +1,5 @@
-import { View, Text, Pressable, StyleSheet } from 'react-native'
-import React from 'react'
 import { globalColors, globalMeasures } from '@/constants/theme'
+import { Pressable, StyleSheet, Text } from 'react-native'
 
 
 interface Props {

@@ -8,5 +8,6 @@ export const globalColors = {
 
 export const globalMeasures = {
     margin: 24,
-    padding: 24
+    padding: 24,
+    textSizeTitle: 18
 }
