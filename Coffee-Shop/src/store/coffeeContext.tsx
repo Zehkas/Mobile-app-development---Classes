@@ -1,4 +1,5 @@
-import { createContext, ReactNode, useState } from "react"
+import AsyncStorage from '@react-native-async-storage/async-storage'
+import { createContext, ReactNode, useEffect, useState } from "react"
 
 export interface CoffeeCart {
     id: string,
@@ -31,6 +32,22 @@ interface Props {
 
 const CartContextProvider = ({ children }: Props) => {
     const [cart, setCart] = useState<CoffeeCart[]>([])
+
+
+    useEffect (() => {
+        async function saveCart(){
+            await AsyncStorage.setItem("cart", JSON.stringify(cart))
+        }
+        saveCart()
+    }, [cart])
+
+    useEffect (() => {
+        async function getCart(){
+            const json = await AsyncStorage.getItem('cart')
+            setCart(json != null?JSON.parse(json): [])
+        }
+        getCart()
+    }, [])
 
     const addCoffeeToCart = (coffee: CoffeeCart) => {
         const coffeeFound = cart.find(c => c.id === coffee.id)

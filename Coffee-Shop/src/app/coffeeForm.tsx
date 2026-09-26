@@ -1,10 +1,10 @@
 import CoffeeButton from '@/Components/CoffeeButtons'
 import { globalColors, globalMeasures } from '@/constants/theme'
 import { CartContext, CoffeeCart } from '@/store/coffeeContext'
-import { DATA_COFFEES } from '@/store/coffees.store'
+import { Coffee } from '@/store/coffees.store'
 import { Ionicons } from '@expo/vector-icons'
 import { useLocalSearchParams, useRouter } from 'expo-router'
-import { useContext, useState } from 'react'
+import { useContext, useEffect, useState } from 'react'
 import { Image, Pressable, StyleSheet, Text, View } from 'react-native'
 import { SafeAreaView } from 'react-native-safe-area-context'
 
@@ -22,7 +22,18 @@ const CoffeeFormScreen = () => {
     const [quantity, setQuantity] = useState(1)
     const [size, setSize] = useState('S')
 
-    const coffee = DATA_COFFEES.find(item => item.id === id)
+    const [listCoffee, setListCoffee] = useState<Coffee[]>([])
+
+    useEffect(() => {
+        async function getCoffees(){
+          const resp = await fetch('https://rodev.cl/coffee-api/index.json')
+          const data = await resp.json()
+          setListCoffee(data)
+        }
+        getCoffees()
+      }, [])
+
+    const coffee = listCoffee.find(item => item.id === id)
 
     const back = () => {
         router.replace('/products')
@@ -70,7 +81,7 @@ const CoffeeFormScreen = () => {
             </View>
 
             <View style={{ alignItems: 'center' }}>
-                <Image source={coffee?.image} style={{ height: 200, width: 200 }} />
+                <Image source={typeof coffee?.image === 'string' ?{uri:coffee?.image}: coffee?.image} style={{ height: 200, width: 200 }} />
 
                 <Text>Q U A N T I T Y</Text>
 

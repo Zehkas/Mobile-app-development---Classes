@@ -1,10 +1,10 @@
 import CoffeeItem from '@/Components/CoffeeItem'
 import { globalColors, globalMeasures } from '@/constants/theme'
 import { CartContext } from '@/store/coffeeContext'
-import { DATA_COFFEES } from '@/store/coffees.store'
+import { Coffee } from '@/store/coffees.store'
 import { Ionicons } from '@expo/vector-icons'
 import { useRouter } from 'expo-router'
-import { useContext } from 'react'
+import { useContext, useEffect, useState } from 'react'
 import { FlatList, Pressable, StyleSheet, Text, View } from 'react-native'
 import { SafeAreaView } from 'react-native-safe-area-context'
 
@@ -12,6 +12,22 @@ const SelectCoffeeScreen = () => {
 
   const router = useRouter()
   const {cart} = useContext(CartContext)
+
+  //estado del coffee para almacenar la data de la api
+  const [listCoffee, setListCoffee] = useState<Coffee[]>([])
+
+  //obtener los cafes desde una api
+  useEffect(() => {
+    async function getCoffees(){
+      const resp = await fetch('https://rodev.cl/coffee-api/index.json')
+      const data = await resp.json()
+      setListCoffee(data)
+    }
+    getCoffees()
+  }, [])
+
+  
+  
 
 
   return (
@@ -35,7 +51,8 @@ const SelectCoffeeScreen = () => {
       </View>
 
       <FlatList
-        data={DATA_COFFEES}
+        data={listCoffee}
+        showsVerticalScrollIndicator={false}
         keyExtractor={(Coffee) => Coffee.id}
         renderItem={({ item }) => <CoffeeItem
           title={item.title}

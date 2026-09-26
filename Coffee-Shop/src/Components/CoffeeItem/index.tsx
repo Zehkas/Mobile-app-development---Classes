@@ -8,7 +8,7 @@ interface Props {
     id: string,
     title: string,
     price: string,
-    image: any
+    image: any|string
 }
 
 const CoffeeItem = (props: Props) => {
@@ -22,7 +22,7 @@ const CoffeeItem = (props: Props) => {
     return (
         <View style={styles.container}>
             <View style = {{flexDirection:'row', alignItems:'center', gap:20}}>
-                <Image source={props.image} style={{ height: 80, width: 80 }} />
+                <Image source={typeof props.image === 'string'? {uri:props.image} : props.image} style={{ height: 80, width: 80 }} />
                     <View style = {{gap:5}}>
                         <Text style= {{fontWeight:'bold', fontSize:16}}>{props.title}</Text>
                         <Text style = {{color:'rgb(139, 139, 139)'}}>${props.price}</Text>

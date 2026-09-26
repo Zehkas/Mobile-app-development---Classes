@@ -2,7 +2,7 @@ export interface Coffee{
     id:string,
     title:string,
     price:string,
-    image:any,
+    image:any|string,
     available:boolean,
     strong:boolean
 }
